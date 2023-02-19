@@ -1,0 +1,3 @@
+[submodule "3rdParties/immer"]
+	path = 3rdParties/immer
+	url = git@github.com:arximboldi/immer.git
