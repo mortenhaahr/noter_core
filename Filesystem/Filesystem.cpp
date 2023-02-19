@@ -2,16 +2,21 @@
 // Created by morten on 2/17/23.
 //
 
+#include <algorithm>
 #include "Filesystem.h"
 
-#include <utility>
+namespace ntr::fs::Filesystem {
+    Tree expand(const Tree &tree, const std::function<Tree(const Tree &)> &strategy) {
+        return strategy(tree);
+    }
 
+    Tree from_path(const std::filesystem::path &path) {
+        return {std::filesystem::directory_entry{path}, {}};
+    }
 
-ntr::fs::Filesystem::Filesystem(std::filesystem::path start_path, ntr::fs::ExpandStrategy *strat) : start_path_{std::move(start_path)}, strat_{strat}{
-    in_memory_ = {std::filesystem::directory_entry{start_path_}, {}};
-    expand();
-}
-
-void ntr::fs::Filesystem::expand() {
-    strat_->expand(in_memory_);
+    Tree join(const Tree& root, const immer::vector<Tree>& leafs) {
+        // TODO: Test that single instances of every leaf is in root
+        auto rt = root.children.transient();
+        // TODO: Implement (probably through recursion)
+    }
 }

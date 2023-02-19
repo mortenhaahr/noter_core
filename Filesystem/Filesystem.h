@@ -7,22 +7,18 @@
 
 #include <filesystem>
 #include <list>
-#include "ExpandStrategies/ExpandStrategy.h"
+#include <functional>
+#include "TreeNode.h"
 
-namespace ntr::fs {
-    class Filesystem {
-    public:
-        using Tree = TreeNode<std::filesystem::directory_entry>;
 
-        Filesystem(std::filesystem::path start_path, ExpandStrategy* strat);
-        void expand();
+namespace ntr::fs::Filesystem {
+    using Tree = TreeNode<std::filesystem::directory_entry>;
 
-    private:
-        ExpandStrategy* strat_;
-        std::filesystem::path start_path_;
-        Tree in_memory_{};
+    Tree expand(const Tree &tree, const std::function<Tree(const Tree &)> &strategy);
 
-    };
+    Tree from_path(const std::filesystem::path &path);
+
+    Tree join(const Tree& root, const immer::vector<Tree>& leafs);
 }
 
 
